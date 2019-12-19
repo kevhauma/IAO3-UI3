@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          ExamenProject
+          ExamenProject - Hospitaal
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -25,9 +25,18 @@
     >
       <q-list>
         <q-item-label header>Lijst</q-item-label>
-        <q-item clickable tag="a" to="/rooms">
+          <q-item clickable tag="a" to="/rooms">
           <q-item-section avatar>
-            <q-icon name="school" />
+            <q-icon name="account_circle" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Patients</q-item-label>
+            <q-item-label caption>click to go to patients</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable tag="a" to="/patients">
+          <q-item-section avatar>
+            <q-icon name="event_seat" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Rooms</q-item-label>
@@ -46,7 +55,6 @@
 <script>
 export default {
   name: 'MyLayout',
-
   data () {
     return {
       leftDrawerOpen: false
