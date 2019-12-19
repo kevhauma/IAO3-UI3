@@ -1,5 +1,4 @@
 export default {
     actionThreshold : 120,
-    HRthreshold : 180,
-    
+    HRthreshold : 180,    
 }

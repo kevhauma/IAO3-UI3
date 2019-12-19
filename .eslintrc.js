@@ -1,55 +1,36 @@
 module.exports = {
-  root: true,
+    root: true,
 
-  parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module'
-  },
+    parserOptions: {
+        parser: 'babel-eslint',
+        sourceType: 'module'
+    },
 
-  env: {
-    browser: true
-  },
+    env: {
+        browser: true
+    },
 
-  extends: [
-    // https://eslint.vuejs.org/rules/#priority-a-essential-error-prevention
-    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/essential',
-    '@vue/standard'
-  ],
+    extends: ["plugin:vue/essential"],
+    rules: {
+        // allow async-await
+        'generator-star-spacing': 'off',
+        // allow paren-less arrow functions
+        'arrow-parens': 'off',
+        "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+        "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
+    },
 
-  // required to lint *.vue files
-  plugins: [
+    // required to lint *.vue files
+    plugins: [
     'vue'
   ],
 
-  globals: {
-    'ga': true, // Google Analytics
-    'cordova': true,
-    '__statics': true,
-    'process': true,
-    'Capacitor': true,
-    'chrome': true
-  },
-
-  // add your custom rules here
-  rules: {
-    // allow async-await
-    'generator-star-spacing': 'off',
-    // allow paren-less arrow functions
-    'arrow-parens': 'off',
-    'one-var': 'off',
-    'indent': [2,"tab"],
-    'import/first': 'off',
-    'import/named': 'error',
-    'import/namespace': 'error',
-    'import/default': 'error',
-    'import/export': 'error',
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
-    'import/no-extraneous-dependencies': 'off',
-    'prefer-promise-reject-errors': 'off',
-
-    // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
-  }
+    globals: {
+        'ga': true, // Google Analytics
+        'cordova': true,
+        '__statics': true,
+        'process': true,
+        'Capacitor': true,
+        'chrome': true
+    },
 }

@@ -1,23 +1,35 @@
-import axios from "axios"
+import axios from 'axios'
+import {
+    URI_PATH
+} from './constants'
 
-async function get(path){
-    let result = axios.get(path)
-    return result.data
-}
-async function post(path){
-    let result = axios.post(path)
-    return result.data
-}
-async function update(path){
-    let result = axios.put(path)
-    return result.data
-}
-async function del(path){
-    let result = axios.delete(path)
-    return result.data
+const options = {
+    headers: {
+	  'Access-Control-Allow-Origin': '*',        
+	}
 }
 
+
+async function get(path) {
+    let result = await axios.get(`${URI_PATH}${path}`,options)
+    return result.data
+}
+async function post(path) {
+    let result = await axios.post(`${URI_PATH}${path}`,options)
+    return result.data
+}
+async function update(path) {
+    let result = await axios.put(`${URI_PATH}${path}`,options)
+    return result.data
+}
+async function del(path) {
+    let result = await axios.delete(`${URI_PATH}${path}`,options)
+    return result.data
+}
 
 export default {
-    get,post,update,del
+    get,
+    post,
+    update,
+    del
 }

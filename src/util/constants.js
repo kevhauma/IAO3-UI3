@@ -1,3 +1,1 @@
-export default {
-    URI_PATH: "localhost:3000"
-}
+export const URI_PATH =  "http://localhost:3000"
