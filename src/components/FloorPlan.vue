@@ -30,14 +30,18 @@
         components: {
             Room
         },
-        created() {
-            this.rooms.forEach((room) => {
-                REST.get(`/room/${room}`)
-                    .then(r => {
-                        this.roomObjects.push(r)
-                    })
-                
-            })
+        created() {},
+        watch: {
+            rooms() {
+                this.roomObjects = []
+                this.rooms.forEach((room) => {
+                    REST.get(`/room/${room}`)
+                        .then(r => {
+                            this.roomObjects.push(r)
+                        })
+                })
+
+            }
         },
         methods: {
             getStyle(room) {
@@ -58,9 +62,8 @@
         position: relative;
         /* to allow absolute postioning of markers on map */
         overflow: auto;
-        height: 500px;
+        height: 550px;
         /* fill the parent */
-     
     }
 
     .room {

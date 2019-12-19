@@ -1,10 +1,10 @@
 <template app="room">
-<div>
-    {{room.id}}
- <q-card>
-      <q-item class="card-top">
+
+ <div class="room-container">
+     {{room.id}}
+      <q-item v-if="patient">
         <q-item-section avatar>
-          <q-avatar v-if="patient">
+          <q-avatar >
             <img :src='patient.img'>
           </q-avatar>
         </q-item-section>
@@ -16,7 +16,7 @@
       </q-item>
 
      
-       <q-card-actions align="around">
+       <q-card-actions class="facilities" align="around">
         <q-btn v-if="room.facilities.TV" flat round color="red" icon="live_tv"/>
         <q-btn v-if="!room.facilities.TV" flat round color="red" icon="tv_off"/>
         <q-btn v-if="room.facilities.sanitair" flat round color="teal" icon="wc"/>
@@ -24,8 +24,8 @@
         <q-btn v-if="room.facilities.kinderverzorging" flat round color="primary" icon="child_friendly"/>
       </q-card-actions>
 
-    </q-card>
     </div>
+
 </template>
 <script>
     import REST from "../util/REST.js"
@@ -53,8 +53,14 @@
 </script>
 
 <style>
-    .q-card{
+    .room-container{
         height:100%;
         padding:0;
+        display: flex;
+        flex-direction: column;
+    }
+    .facilities{
+        align-self: flex-end;
+        
     }
 </style>
