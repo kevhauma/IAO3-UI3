@@ -1,6 +1,17 @@
 <template>
 <div v-if="currentDepartment" class="container">
-    <div >{{currentDepartment.name}}</div>    
+    <q-btn-dropdown color="primary" :label="`${currentDepartment.id}. ${currentDepartment.name}`">
+        <q-list>
+            <q-item 
+                    clickable 
+                    v-close-popup
+                    v-for="dep in sortedDepartments" 
+                    :key="dep.id"                    
+                    @click="changeDepartment(dep)">
+                {{dep.id}}. {{dep.name}}
+            </q-item>
+        </q-list>
+    </q-btn-dropdown>
     <div>
     <floor-plan :rooms="currentDepartment.rooms">
     
@@ -25,22 +36,28 @@
         },
         data() {
             return {
-                currentDepartmentId: 0,
                 currentDepartment: null,
+                departments: []
             }
         },
         created() {
-            setInterval(()=>this.currentDepartmentId++,10000)
+            REST.get(`/department`)
+                .then(result => {
+                    this.departments = result
+                    this.currentDepartment = this.sortedDepartments[0]
+                })
+                .catch(e => console.error("error: ", e))
         },
-        watch: {
-            currentDepartmentId(){
-            REST.get(`/department/${this.currentDepartmentId}`)
-                .then(result => this.currentDepartment = result)
-                .then(() => console.log("dep: ", this.currentDepartment))
-                .catch(e => console.error("error: ", e))    
+        methods: {
+            changeDepartment(dep){
+                this.currentDepartment = dep
+            }
+        },
+        computed:{
+            sortedDepartments(){
+                return this.departments.slice().sort((a,b)=>a.id - b.id)
             }
         }
-
     }
 
 </script>
