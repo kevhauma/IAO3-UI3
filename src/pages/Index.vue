@@ -1,22 +1,13 @@
 <template>
-<div v-if="currentDepartment" class="container">
-    <q-btn-dropdown color="primary" :label="`${currentDepartment.id}. ${currentDepartment.name}`">
-        <q-list>
-            <q-item 
-                    clickable 
-                    v-close-popup
-                    v-for="dep in sortedDepartments" 
-                    :key="dep.id"                    
-                    @click="changeDepartment(dep)">
-                {{dep.id}}. {{dep.name}}
-            </q-item>
-        </q-list>
-    </q-btn-dropdown>
-    <div>
-    <floor-plan :rooms="currentDepartment.rooms">
-    
-    </floor-plan>
-    </div>
+<div v-if="departments" class="container">
+        <q-card 
+            clickable 
+            v-for="dep in sortedDepartments" 
+            :key="dep.id"                    
+            @click="changeDepartment(dep)"
+        >
+            {{dep.id}}. {{dep.name}}
+        </q-card>
 </div>
 </template>
 <style>
@@ -26,14 +17,10 @@
     }
 
 </style>
-<script>
-    import FloorPlan from "../components/FloorPlan"
+<script>    
     import REST from "../util/REST"
     export default {
         name: 'PageIndex',
-        components: {
-            FloorPlan
-        },
         data() {
             return {
                 currentDepartment: null,
@@ -49,13 +36,13 @@
                 .catch(e => console.error("error: ", e))
         },
         methods: {
-            changeDepartment(dep){
+            changeDepartment(dep) {
                 this.currentDepartment = dep
             }
         },
-        computed:{
-            sortedDepartments(){
-                return this.departments.slice().sort((a,b)=>a.id - b.id)
+        computed: {
+            sortedDepartments() {
+                return this.departments.slice().sort((a, b) => a.id - b.id)
             }
         }
     }

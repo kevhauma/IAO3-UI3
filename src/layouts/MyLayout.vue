@@ -23,25 +23,19 @@
       bordered
       content-class="bg-grey-2"
     >
-      <q-list>
-        <q-item-label header>Lijst</q-item-label>
-          <q-item clickable tag="a" to="/rooms">
-          <q-item-section avatar>
-            <q-icon name="account_circle" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Patients</q-item-label>
-            <q-item-label caption>click to go to patients</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" to="/patients">
-          <q-item-section avatar>
-            <q-icon name="event_seat" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Rooms</q-item-label>
-            <q-item-label caption>click to go to rooms</q-item-label>
-          </q-item-section>
+      <q-list v-if="departments">
+        
+        <q-item-label header>Departments</q-item-label>
+        <q-item v-for="dep in sortedDepartments" :key="dep.id">
+          <q-item clickable tag="a" :to="/department/+dep.id">
+            <q-item-section avatar>
+              <q-icon :name="dep.icon" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{dep.name}}</q-item-label>
+              <q-item-label caption>click to go to {{dep.name}}</q-item-label>
+            </q-item-section>
+          </q-item>
         </q-item>
       </q-list>
     </q-drawer>
@@ -53,11 +47,21 @@
 </template>
 
 <script>
+import departmentManager from "../util/managers/departmentManager"
 export default {
   name: 'MyLayout',
   data () {
     return {
-      leftDrawerOpen: false
+      leftDrawerOpen: false,
+      departments: null,
+    }
+  },
+  created(){
+    departmentManager.get().then(res => this.departments = res)
+  },
+  computed:{
+    sortedDepartments(){
+      return this.departments.slice().sort((a,b)=>a.id - b.id)
     }
   }
 }

@@ -1,28 +1,28 @@
 <template app="room">
 
  <div class="room-container">
-     {{room.id}}
-      <q-item v-if="patient">
-        <q-item-section avatar>
-          <q-avatar >
+     <div class="roomId">{{room.id}}</div>
+      <q-item  class="patientInfo">
+        <q-item-section avatar v-if="patient" class="patientMain">
+          <q-avatar class="patientAvatar">
             <img :src='patient.img'>
           </q-avatar>
+           <q-item-label>{{patient.name}}</q-item-label>
         </q-item-section>
 
-        <q-item-section v-if="patient">
-          <q-item-label>{{patient.name}}</q-item-label>
+        <q-item-section v-if="patient" class="patientName">         
           <q-item-label caption>{{patient.reason}}</q-item-label>
         </q-item-section>
       </q-item>
 
      
-       <q-card-actions class="facilities" align="around">
-        <q-btn v-if="room.facilities.TV" flat round color="red" icon="live_tv"/>
-        <q-btn v-if="!room.facilities.TV" flat round color="red" icon="tv_off"/>
-        <q-btn v-if="room.facilities.sanitair" flat round color="teal" icon="wc"/>
-        <q-btn v-if="room.facilities.salon" flat round color="primary" icon="event_seat"/>
-        <q-btn v-if="room.facilities.kinderverzorging" flat round color="primary" icon="child_friendly"/>
-      </q-card-actions>
+       <q-item class="facilities">
+        <q-icon v-if="room.facilities.TV" flat round color="green" name="live_tv"/>
+        <q-icon v-if="!room.facilities.TV" flat round color="red" name="tv_off"/>
+        <q-icon v-if="room.facilities.sanitair" flat round color="teal" name="wc"/>
+        <q-icon v-if="room.facilities.salon" flat round color="brown" name="event_seat"/>
+        <q-icon v-if="room.facilities.kinderverzorging" flat round color="amber" name="child_friendly"/>
+      </q-item>
 
     </div>
 
@@ -54,13 +54,42 @@
 
 <style>
     .room-container{
-        height:100%;
-        padding:0;
+        padding:5px;
         display: flex;
         flex-direction: column;
+        align-items: center;
+        align-content: space-between;
+        -webkit-box-shadow: inset 0px 0px 10px 8px rgba(255,0,0,1);
+        -moz-box-shadow: inset 0px 0px 10px 8px rgba(255,0,0,1);
+        box-shadow: inset 0px 0px 10px 8px rgba(255,0,0,1);
+    }
+    .patientInfo{
+        flex-grow: 2;
     }
     .facilities{
-        align-self: flex-end;
-        
+       display: flex;
+        flex-wrap: nowrap;        
+        justify-content: center;
+        max-width: 100%;
+        padding: 0;        
+    }
+    .facilities i {
+        font-size: 2em;
+    margin: 4px;
+    }
+
+    .patientInfo{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding:0;
+    }
+    .patientMain{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+    .patientName{
+        flex-grow: 2;
     }
 </style>
