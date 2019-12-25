@@ -7,20 +7,20 @@
         :room='room'
         class='room'
         :style='getStyle(room)'
+        @patient-selected="onPatientSelected"      
         />
     </div>
 </div>
 </template>
 <script>
-    import REST from '../util/REST.js'
+    import roomManager from '../util/managers/roomManager'
+    import departmentManager from '../util/managers/departmentManager'
     import Room from './Room.vue'
 
     export default {
         name: 'floorplan',
         props: {
-            rooms: {
-                type: Array
-            }
+            departmentId: String
         },
         data() {
             return {
@@ -30,19 +30,6 @@
         components: {
             Room
         },
-        created() {},
-        watch: {
-            rooms() {
-                this.roomObjects = []
-                this.rooms.forEach((room) => {
-                    REST.get(`/room/${room}`)
-                        .then(r => {
-                            this.roomObjects.push(r)
-                        })
-                })
-
-            }
-        },
         methods: {
             getStyle(room) {
                 return {
@@ -51,9 +38,30 @@
                     width: `${room.placements.width}px`,
                     height: `${room.placements.height}px`
                 }
+            }, 
+            getRooms(){
+                departmentManager.getRooms(this.departmentId)
+                .then(rooms => {
+                    this.roomObjects = rooms
+                })                
+            },
+            onPatientSelected(patientid){
+                this.$router.push({ 
+                        name: 'patient', 
+                        params: { id: patientid } 
+                    })
             }
-        }
+        },
+        created() {
+            this.getRooms()
+        },
+        watch: {
+            roomIds() {
+                this.getRooms()
+            }
+        },    
     }
+    
 
 </script>
 <style>

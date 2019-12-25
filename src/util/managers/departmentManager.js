@@ -2,6 +2,7 @@ let departments
 
 import REST from "../REST.js"
 import roomManager from "./roomManager"
+import Department from "../classes/Department"
 
 async function get(id) {
     if (!departments) {
@@ -12,7 +13,10 @@ async function get(id) {
         if (!one) {
             one = REST.get(`/department/${id}`)
             if (!one) return null
-            else departments.push(one)
+            else {
+                one = new Department(one)
+                departments.push(one)
+            }        
         }
         return one
     }
@@ -22,13 +26,15 @@ async function get(id) {
 
 async function getRooms(id){
     let {rooms} = await get(id)
-    rooms.map(async(r)=>roomManager.get(r))
-    return rooms
+    let newRooms = []
+    for (const room of rooms) {
+        newRooms.push(await roomManager.get(room))
+    }   
+    return newRooms
 }
 
 async function getFreeRooms(id){
-    let {rooms} = await get(id)
-    rooms.map(async(r)=>roomManager.get(r))
+    let {rooms} = await getRooms(id)
     return rooms.filter(r=>!r.patient)
 }
 

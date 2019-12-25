@@ -1,3 +1,5 @@
+import { date } from "quasar"
+
 export default class Patient{
     constructor(np){
         this.id = np.id
@@ -12,11 +14,19 @@ export default class Patient{
     }
     checkState(){
         let now = new Date()
-        this.actions
+        let firstAction = this.actions
             .filter(a=>!a.done)
-            .forEach(a=>{
-                console.log(a)
-            })
+            .reduce((closest,curr)=> //look for the action that is the earliest
+                curr.time - closest.time < 0 
+                ? curr : closest
+            ,{time:Infinity})
+        
+        if(!firstAction){
+            this.status = "CLEAR"
+        }
+        if(firstAction.time - Date.now() < 200){
+            this.state = "EMERGENCY"
+        }
     }
     
 }

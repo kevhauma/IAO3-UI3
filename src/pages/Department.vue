@@ -1,10 +1,14 @@
 <template>
 <div v-if="department" class="container">
-    <div>
-    <floor-plan :rooms="department.rooms">
-    
-    </floor-plan>
+    <q-toggle v-model="mapView" icon="map"></q-toggle> 
+    <div v-if="mapView">
+        <floor-plan :departmentId="department.id">
+        </floor-plan>
     </div>
+    <!-- <div v-if="!mapView">
+        <room-list :rooms="department.rooms">    
+        </room-list>
+    </div> -->
 </div>
 </template>
 <style>
@@ -19,27 +23,38 @@
     import departmentManager from "../util/managers/departmentManager"
     import { colors } from 'quasar'
     export default {
-        name: 'PageIndex',
+        name: 'DepartmenPage',
         components: {
             FloorPlan
         },
         data() {
             return {
-                department: null,               
+                department: null,    
+                mapView : true,           
             }
+        },
+        methods:{
+            getThisDepartment(){
+                departmentManager.get(this.$route.params.id)
+                        .then(result => {
+                            this.department = result     
+                            colors.setBrand("primary",this.department.color)
+                        })
+                        .catch(e => console.error("error: ", e))
+            }
+        },
+        created(){
+            this.getThisDepartment()
         },
         watch:{
             '$route.params':{
                 handler(){
-                    departmentManager.get(this.$route.params.id)
-                        .then(result => {
-                            this.department = result
-                            console.log(result)         
-                            colors.setBrand("primary",this.department.color)
-                        })
-                        .catch(e => console.error("error: ", e))
+                    this.getThisDepartment()
                 },
                 immediate: true
+            },
+            mapView(){
+                this.getThisDepartment()
             }
         }       
     }

@@ -1,13 +1,14 @@
 <template>
 <div v-if="departments" class="container">
-        <q-card 
+        <div
             clickable 
+            tag="a"
             v-for="dep in sortedDepartments" 
             :key="dep.id"                    
-            @click="changeDepartment(dep)"
+            :to="/department/+dep.id"
         >
             {{dep.id}}. {{dep.name}}
-        </q-card>
+        </div>
 </div>
 </template>
 <style>
@@ -18,7 +19,7 @@
 
 </style>
 <script>    
-    import REST from "../util/REST"
+    import departmentManager from "../util/managers/departmentManager"
     export default {
         name: 'PageIndex',
         data() {
@@ -28,7 +29,7 @@
             }
         },
         created() {
-            REST.get(`/department`)
+            departmentManager.get()
                 .then(result => {
                     this.departments = result
                     this.currentDepartment = this.sortedDepartments[0]

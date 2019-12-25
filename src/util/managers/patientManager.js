@@ -1,6 +1,7 @@
 let patients
 
 import REST from "../REST.js"
+import Patient from "../classes/Patient"
 
 async function get(id) {
     if (!patients) {
@@ -11,7 +12,10 @@ async function get(id) {
         if (!one) {
             one = REST.get(`/patient/${id}`)
             if (!one) return null
-            else patients.push(one)
+            else {
+                one = new Patient(one)
+                patients.push(one)
+            }
         }
         return one
     }
@@ -22,7 +26,7 @@ async function get(id) {
 async function update(patient) {
     let updated = await REST.put("/patient",patient)
     if (id) {
-        patients.map(p => p.id === updated.id ? updated : p)
+        patients.map(p => p.id === updated.id ? new Patient(updated) : p)
     }
     return updated    
 }

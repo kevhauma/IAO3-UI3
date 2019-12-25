@@ -2,7 +2,7 @@
 
  <div class="room-container">
      <div class="roomId">{{room.id}}</div>
-      <q-item  class="patientInfo">
+      <q-item  class="patientInfo" @click.native="onRoomSelected">
         <q-item-section avatar v-if="patient" class="patientMain">
           <q-avatar class="patientAvatar">
             <img :src='patient.img'>
@@ -15,7 +15,6 @@
         </q-item-section>
       </q-item>
 
-     
        <q-item class="facilities">
         <q-icon v-if="room.facilities.TV" flat round color="green" name="live_tv"/>
         <q-icon v-if="!room.facilities.TV" flat round color="red" name="tv_off"/>
@@ -23,12 +22,11 @@
         <q-icon v-if="room.facilities.salon" flat round color="brown" name="event_seat"/>
         <q-icon v-if="room.facilities.kinderverzorging" flat round color="amber" name="child_friendly"/>
       </q-item>
-
     </div>
 
 </template>
 <script>
-    import REST from "../util/REST.js"
+    import patientManager from "../util/managers/patientManager.js"
     export default {
         name: 'room',
         props: {
@@ -43,10 +41,16 @@
         },
         created() {
             if (this.room.patient) {
-                REST.get(`/patient/${this.room.patient}`)
+                patientManager.get(this.room.patient)
                     .then(patient => this.patient = patient)
-                    .then(()=> console.log(this.patient))
             }
+        },
+        methods:{
+            onRoomSelected(event){
+                if(this.patient){
+                    this.$emit('patient-selected',this.patient.id)
+                }
+            }, 
         }
     }
 
@@ -65,6 +69,9 @@
     }
     .patientInfo{
         flex-grow: 2;
+    }
+    .patientInfo :hover{
+        cursor: pointer;
     }
     .facilities{
        display: flex;

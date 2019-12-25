@@ -1,17 +1,23 @@
 const routes = [
 	{
-		path: '/',
+		path: '/',		
 		component: () => import('layouts/MyLayout.vue'),
 		children: [
-			{ path: '', component: () => import('pages/Index.vue') }
-		]
-	},
-    {
-		path: '/department/:id',
-		component: () => import('layouts/MyLayout.vue'),
-		children: [
-			{ path: '', component: () => import('pages/Department.vue') }
-		]
+		{ 
+			path: '',
+			name: 'index', 
+			component: () => import('pages/Index.vue') 
+		},
+		{
+			path: '/department/:id',
+			name: 'department',
+			component: () => import('pages/Department.vue'),
+		},
+		{
+			path: '/patient/:id',
+			name: 'patient',
+			component: () => import('pages/Patient.vue'),	
+		}]
 	}
 ]
 
