@@ -6,7 +6,8 @@ import departmentManager from "./departmentManager"
 
 async function get(id) {
     if (!rooms) {
-        rooms = await REST.get("/room")
+        let result = await REST.get("/room")
+        rooms = result.map(r=>new Room(r))
     }
     if (id) {
         let one = rooms.find(p => p.id === id)
@@ -14,8 +15,7 @@ async function get(id) {
             one = REST.get(`/room/${id}`)
             if (!one) return null
             else {
-                one = new Room(one)
-                rooms.push(one)
+                rooms.push(new Room(one))
             }
         }
         return one

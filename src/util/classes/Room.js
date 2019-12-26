@@ -3,7 +3,6 @@ export default class Room{
         this.id = nr.id
         this.placements = nr.placements
         this.facilities = nr.facilities
+        this.patient = nr.patient
     }
-    
-    
 }

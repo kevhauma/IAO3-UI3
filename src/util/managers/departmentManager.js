@@ -6,36 +6,34 @@ import Department from "../classes/Department"
 
 async function get(id) {
     if (!departments) {
-        departments = await REST.get("/department")
+        let result = await REST.get("/department")
+        departments = result.map(r=> new Department(r))
     }
     if (id) {
         let one = departments.find(p => p.id === id)
         if (!one) {
             one = REST.get(`/department/${id}`)
             if (!one) return null
-            else {
-                one = new Department(one)
-                departments.push(one)
-            }        
+            else departments.push(new Department(one))
         }
         return one
-    }
-    else 
+    } else
         return departments
 }
 
-async function getRooms(id){
-    let {rooms} = await get(id)
+async function getRooms(id) {
+    let {
+        rooms
+    } = await get(id)
     let newRooms = []
     for (const room of rooms) {
         newRooms.push(await roomManager.get(room))
-    }   
+    }
     return newRooms
 }
 
-async function getFreeRooms(id){
-    let {rooms} = await getRooms(id)
-    return rooms.filter(r=>!r.patient)
-}
 
-export default {get,getRooms,getFreeRooms}
+export default {
+    get,
+    getRooms
+}

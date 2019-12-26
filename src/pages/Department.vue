@@ -5,10 +5,10 @@
         <floor-plan :departmentId="department.id">
         </floor-plan>
     </div>
-    <!-- <div v-if="!mapView">
-        <room-list :rooms="department.rooms">    
-        </room-list>
-    </div> -->
+     <div v-if="!mapView">
+        <floor-list :departmentId="department.id">    
+        </floor-list>
+    </div> 
 </div>
 </template>
 <style>
@@ -20,12 +20,14 @@
 </style>
 <script>
     import FloorPlan from "../components/FloorPlan"
+    import FloorList from "../components/FloorList"
     import departmentManager from "../util/managers/departmentManager"
     import { colors } from 'quasar'
     export default {
         name: 'DepartmenPage',
         components: {
-            FloorPlan
+            FloorPlan,
+            FloorList
         },
         data() {
             return {
