@@ -18,6 +18,7 @@ export default class Patient{
         console.log("this: ",this.actions)
         this.status = "CLEAR"
         this.stateInterval = setInterval(()=>this.checkState(),60*1000) // check state every minute
+        this.heartrate = []
     }
     checkState(){
         let now = new Date()
@@ -36,5 +37,7 @@ export default class Patient{
         }
 //        console.log(this.status,firstAction)
     }
-    
+    addHeartRate(hr){
+        this.heartrate.push(hr)
+    }
 }
