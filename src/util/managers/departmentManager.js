@@ -7,14 +7,17 @@ import Department from "../classes/Department"
 async function get(id) {
     if (!departments) {
         let result = await REST.get("/department")
-        departments = result.map(r=> new Department(r))
+        departments = result.map(r => new Department(r))
     }
     if (id) {
         let one = departments.find(p => p.id === id)
         if (!one) {
-            one = REST.get(`/department/${id}`)
+            one = await REST.get(`/department/${id}`)
             if (!one) return null
-            else departments.push(new Department(one))
+            else {
+                one = new Department(one)
+                departments.push(one)
+            }
         }
         return one
     } else

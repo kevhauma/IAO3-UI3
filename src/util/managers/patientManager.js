@@ -1,21 +1,23 @@
-let patients
+let patients = []
 
 import REST from "../REST.js"
 import Patient from "../classes/Patient"
 
 async function get(id) {
-    if (!patients && !id) {
+    if (patients.length > 0 && !id) {
         let result = await REST.get("/patient")
         patients = result.map(r=>new Patient(r))
     }
     if (id) {
         let one = patients.find(p => p.id === id)
         if (!one) {
-            one = REST.get(`/patient/${id}`)
+            one = await REST.get(`/patient/${id}`)
             if (!one) return null
-            else patients.push(new Patient(one))
+            else {
+                one = new Patient(one)
+                patients.push(one)
+            }
         }
-        console.log(one)
         return one
     }
     else 

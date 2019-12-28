@@ -1,38 +1,24 @@
 import patientManager from "./patientManager"
-import io from 'socket.io'
+//import io from 'socket.io'
+//
+//
+//io.on('heartrate',newHR => {
+//    let patient = getPatient(newHR.patient)
+//    patient.hr.push(newHR.hr)
+//    if(patient.hr.length > 200)
+//        patient.hr.shift()
+//})
 
+start()
 
-
-let io = require('socket.io')(http)
-let simplex = new require('simplex-noise')()
-let repo = require("../database/repo.js")("patient")
-
-let offsetX = 0
-
-
-io.on('connection', async(socket) => {
-    let allPatients = await repo.get();
+async function start() {
+    let all = await patientManager.get()
     setInterval(() => {
-        allPatients.forEach(patient => {
-            let hr = simplex.noise2D(patient.id, offsetY) * 200 + 40
-            io.emit("hr", {patient,hr})
+        all.forEach(p => {
+            let randomHR = Math.round(Math.random() * 200 + 50)
+            p.addHeartRate(randomHR)
+            if (p.heartrate.length > 200)
+                p.heartrate.shift()
         })
-        offsetY += 0.01
-    }, 2000)
-})
-
-
-io
-    .off("/patient")
-    .on('connection', async(socket) => {
-    let hr = simplex.noise2D(200, offsetY) * 200 + 40
-    socket.emit("hr", {hr})
-    offsetY += 0.01
-
-})
-
-
-//post request to ring bell in room
-app.post("/bell/:roomId", (req, res) => {
-    io.emit("bellRinged", req.params.roomId)
-})
+    },5000)
+}

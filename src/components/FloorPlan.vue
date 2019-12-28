@@ -1,16 +1,10 @@
 <template app='floorplan'>
-<div class='floorplan'>
-    <img src="../statics/floorplan.png">
-    <div v-if='roomObjects.length > 0'>
-        <room v-for='room in roomObjects'
-        :key='room.id'
-        :room='room'
-        class='room'
-        :style='getStyle(room)'
-        @patient-selected="onPatientSelected"      
-        />
+    <div class='floorplan'>
+        <img src="../statics/floorplan.png">
+        <div>
+            <room v-for='room in rooms' :key='room.id' :room='room' :position="'absolute'" :style='getStyle(room)' @patient-selected="onPatientSelected" />
+        </div>
     </div>
-</div>
 </template>
 <script>
     import roomManager from '../util/managers/roomManager'
@@ -18,13 +12,15 @@
     import Room from './Room.vue'
 
     export default {
-        name: 'floorplan',
+        name: 'floorlist',
         props: {
-            departmentId: String
+            rooms: {
+                type: Array,
+            },
         },
         data() {
             return {
-                roomObjects: [],
+                updatedRooms: null
             }
         },
         components: {
@@ -38,30 +34,19 @@
                     width: `${room.placements.width}px`,
                     height: `${room.placements.height}px`
                 }
-            }, 
-            getRooms(){
-                departmentManager.getRooms(this.departmentId)
-                .then(rooms => {
-                    this.roomObjects = rooms
-                })                
             },
-            onPatientSelected(patientid){
-                this.$router.push({ 
-                        name: 'patient', 
-                        params: { id: patientid } 
-                    })
+            onPatientSelected(patientid) {
+                this.$emit('patient-selected', patientid)
             }
-        },
-        created() {
-            this.getRooms()
         },
         watch: {
-            roomIds() {
-                this.getRooms()
+            rooms(newRooms, old) {
+                console.log("watched: ", newRooms)
+                this.updatedRooms = newRooms
+
             }
-        },    
+        },
     }
-    
 
 </script>
 <style>
@@ -70,12 +55,7 @@
         position: relative;
         /* to allow absolute postioning of markers on map */
         overflow: auto;
-        height: 550px;
-        /* fill the parent */
-    }
-
-    .room {
-        position: absolute;
+        height: 100%;
     }
 
 </style>

@@ -12,10 +12,11 @@ async function get(id) {
     if (id) {
         let one = rooms.find(p => p.id === id)
         if (!one) {
-            one = REST.get(`/room/${id}`)
+            one = await REST.get(`/room/${id}`)
             if (!one) return null
             else {
-                rooms.push(new Room(one))
+                one = new Room(one)
+                rooms.push(one)
             }
         }
         return one

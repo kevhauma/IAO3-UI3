@@ -7,6 +7,7 @@
                 <q-toolbar-title>
                     ExamenProject - Hospitaal
                 </q-toolbar-title>
+                <q-btn flat round dense icon="apps" class="q-mr-xs" @click="settings=!settings" />
             </q-toolbar>
         </q-header>
 
@@ -31,18 +32,28 @@
         <q-page-container>
             <router-view />
         </q-page-container>
+        
+        <settings v-if="settings">
+        </settings>
+        
     </q-layout>
 </template>
 
 <script>
     import departmentManager from "../util/managers/departmentManager"
+    import heartRateManager from "../util/managers/heartRateManager"
+    import Settings from "../components/settings"
     export default {
         name: 'MyLayout',
         data() {
             return {
                 leftDrawerOpen: false,
                 departments: null,
+                settings: false,
             }
+        },
+        components:{
+          Settings  
         },
         created() {
             departmentManager.get()

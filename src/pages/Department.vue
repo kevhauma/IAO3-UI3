@@ -1,15 +1,15 @@
 <template>
-<div v-if="department" class="container">
-    <q-toggle v-model="mapView" icon="map"></q-toggle> 
-    <div v-if="mapView">
-        <floor-plan :departmentId="department.id">
-        </floor-plan>
+    <div v-if="department" class="container">
+        <q-toggle v-model="mapView" icon="map"></q-toggle>
+        <div v-if="mapView">
+            <floor-plan :rooms="department.roomObjects" @patient-selected="onPatientSelected" >
+            </floor-plan>
+        </div>
+        <div v-if="!mapView">
+            <floor-list :rooms="department.roomObjects" @patient-selected="onPatientSelected" >
+            </floor-list>
+        </div>
     </div>
-     <div v-if="!mapView">
-        <floor-list :departmentId="department.id">    
-        </floor-list>
-    </div> 
-</div>
 </template>
 <style>
     .container {
@@ -22,7 +22,9 @@
     import FloorPlan from "../components/FloorPlan"
     import FloorList from "../components/FloorList"
     import departmentManager from "../util/managers/departmentManager"
-    import { colors } from 'quasar'
+    import {
+        colors
+    } from 'quasar'
     export default {
         name: 'DepartmenPage',
         components: {
@@ -31,34 +33,46 @@
         },
         data() {
             return {
-                department: null,    
-                mapView : true,           
+                department: null,
+                mapView: true,
             }
         },
-        methods:{
-            getThisDepartment(){
+        methods: {
+            getThisDepartment() {
                 departmentManager.get(this.$route.params.id)
-                        .then(result => {
-                            this.department = result     
-                            colors.setBrand("primary",this.department.color)
-                        })
-                        .catch(e => console.error("error: ", e))
+                    .then(result => {
+                        this.department = result
+                    console.log("department Set")
+                        colors.setBrand("primary", this.department.color)
+                    
+                        return departmentManager.getRooms(this.department.id)
+                    })
+                    .then(rooms => {
+                        rooms.sort((a,b)=> a.id - b.id)
+                        console.log("rooms set")
+                        this.department.roomObjects = rooms
+                    })
+                    .catch(e => console.error("error: ", e))
+            },
+            onPatientSelected(patientid){
+                this.$router.push({ 
+                        name: 'patient', 
+                        params: { id: patientid } 
+                    })
             }
         },
-        created(){
+        created() {
+            console.log("department created")
             this.getThisDepartment()
         },
-        watch:{
-            '$route.params':{
-                handler(){
+        watch: {
+            '$route.params': {
+                handler() {
                     this.getThisDepartment()
                 },
                 immediate: true
-            },
-            mapView(){
-                this.getThisDepartment()
             }
-        }       
+        }
     }
 
 </script>
