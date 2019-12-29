@@ -1,7 +1,7 @@
 <template app='floorlist'>
     <div>
         <div class='floorlist' v-if='updatedRooms'>
-            <room v-for='room in rooms' :key='room.id' :room='room' :position="'relative'" class="listroom" @patient-selected="onPatientSelected" />
+            <room v-for='room in updatedRooms' :key='room.id' :room='room' :position="'relative'" class="listroom" @patient-selected="onPatientSelected" />
         </div>
     </div>
 </template>
@@ -27,13 +27,17 @@
         },
         methods: {
             onPatientSelected(patientid) {
-                this.$emit('patient-selected', this.patient.id)
+                this.$emit('patient-selected', patientid)
             }
         },
         watch: {
-            rooms(newRooms, old) {
-                if (newRooms)
+            rooms: {
+                handler(newRooms, old) {
+                    console.log("watched: ", newRooms)
                     this.updatedRooms = newRooms
+                },
+                deep: true,
+                immediate: true,
             }
         },
     }

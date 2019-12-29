@@ -4,8 +4,7 @@ import Vue from 'vue';
 
 const setting = Vue.observable({
     actionThreshold: 120,
-    HRthreshold: {min:40,max:180},
-    UIcolor: "#027be3",
+    HRthreshold: {min:40,max:180}
 });
 
  const getters = {

@@ -12,6 +12,7 @@ export default class Patient {
         this.reason = np.reason
         this.actions = np.actions.map(a => { //set date string to date object
             return {
+                id: a.id,
                 actionName: a.actionName,
                 done: a.done,
                 time: new Date(a.time)

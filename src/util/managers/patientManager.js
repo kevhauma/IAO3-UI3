@@ -6,7 +6,7 @@ import Patient from "../classes/Patient"
 async function get(id) {
     if (patients.length > 0 && !id) {
         let result = await REST.get("/patient")
-        patients = result.map(r=>new Patient(r))
+        patients = result.map(r => new Patient(r))
     }
     if (id) {
         let one = patients.find(p => p.id === id)
@@ -19,16 +19,35 @@ async function get(id) {
             }
         }
         return one
-    }
-    else 
+    } else
         return patients
 }
 
 async function update(patient) {
-    let updated = await REST.put("/patient",patient)
-    if (id) {
+    let clean = {
+        id: patient.id,
+        name: patient.name,
+        bloodPressure: patient.bloodPressure,
+        img: patient.img,
+        dob: patient.dob,
+        vegan: patient.vegan,
+        reason: patient.reason,
+        actions: patient.actions.map(a => {
+            return {
+                id: a.id,
+                actionName: a.actionName,
+                done: a.done,
+                time: a.time
+            }
+        })
+    }
+    let updated = await REST.update(`/patient/${clean.id}`, clean)
+    if (update.id) {
         patients.map(p => p.id === updated.id ? new Patient(updated) : p)
     }
     return updated
 }
-export default {get,update}
+export default {
+    get,
+    update
+}

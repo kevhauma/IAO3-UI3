@@ -2,11 +2,11 @@
     <div v-if="department" class="container">
         <q-toggle v-model="mapView" icon="map"></q-toggle>
         <div v-if="mapView">
-            <floor-plan :rooms="department.roomObjects" @patient-selected="onPatientSelected" >
+            <floor-plan v-if="department" :rooms="department.roomObjects" @patient-selected="onPatientSelected">
             </floor-plan>
         </div>
         <div v-if="!mapView">
-            <floor-list :rooms="department.roomObjects" @patient-selected="onPatientSelected" >
+            <floor-list v-if="department" :rooms="department.roomObjects" @patient-selected="onPatientSelected">
             </floor-list>
         </div>
     </div>
@@ -42,23 +42,25 @@
                 departmentManager.get(this.$route.params.id)
                     .then(result => {
                         this.department = result
-                    console.log("department Set")
+                        console.log("department Set")
                         colors.setBrand("primary", this.department.color)
-                    
+
                         return departmentManager.getRooms(this.department.id)
                     })
                     .then(rooms => {
-                        rooms.sort((a,b)=> a.id - b.id)
+                        rooms.sort((a, b) => a.id - b.id)
                         console.log("rooms set")
                         this.department.roomObjects = rooms
                     })
                     .catch(e => console.error("error: ", e))
             },
-            onPatientSelected(patientid){
-                this.$router.push({ 
-                        name: 'patient', 
-                        params: { id: patientid } 
-                    })
+            onPatientSelected(patientid) {
+                this.$router.push({
+                    name: 'patient',
+                    params: {
+                        id: patientid
+                    }
+                })
             }
         },
         created() {

@@ -17,8 +17,8 @@ async function start() {
         all.forEach(p => {
             let randomHR = Math.round(Math.random() * 200 + 50)
             p.addHeartRate(randomHR)
-            if (p.heartrate.length > 200)
+            if (p.heartrate.length > 20)
                 p.heartrate.shift()
         })
-    },5000)
+    },1000)
 }
