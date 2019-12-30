@@ -2,7 +2,7 @@ import axios from 'axios'
 import {
     URI_PATH
 } from './constants'
-import errorService from './errorService'
+import errorService from './services/errorService'
 
 const options = {
     headers: {

@@ -93,7 +93,6 @@
                 return rs
             },
             audioOn(){
-                console.log("audio:", settings.getters.audioOn())
                 return settings.getters.audioOn()
             }
             

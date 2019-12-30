@@ -30,27 +30,30 @@
         methods: {
             fillData() {
                 this.graphData = {
-                    labels: this.chartdata.map(d=>""),
+                    labels: this.chartdata.map(d => ""),
                     datasets: [{
                         label: 'HeartRate',
                         data: this.chartdata,
                         backgroundColor: colors.getBrand('primary'),
-                        pointColor : "rgba(0,0,0,0)",
-                        pointStrokeColor : "rgba(0,0,0,0)",
+                        pointColor: "rgba(0,0,0,0)",
+                        pointStrokeColor: "rgba(0,0,0,0)",
                     }],
                     options: {
                         scales: {
                             yAxes: [{
                                 ticks: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    max: 300,
+                                    min: 0,
                                 },
                                 gridLines: {
                                     display: true
-                                }
+                                },
+
                             }],
                             xAxes: [{
                                 gridLines: {
-                                    display: false
+                                    display: false,
                                 }
                             }]
                         },

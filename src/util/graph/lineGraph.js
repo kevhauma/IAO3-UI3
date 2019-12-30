@@ -15,6 +15,6 @@ export default {
   mounted () {
     // this.chartData is created in the mixin.
     // If you want to pass options please create a local options object
-    this.renderChart(this.chartData, {...this.options,scaleOverride : true,})
+    this.renderChart(this.chartData, {...this.options,...this.chartData.options})
   }
 }

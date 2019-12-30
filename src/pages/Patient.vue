@@ -97,7 +97,7 @@
             },
             filteredActions(){
                 if(this.filter)
-                    return this.patient.actions.filter(a=>a.done)
+                    return this.patient.actions.filter(a=>!a.done)
                 else 
                     return this.patient.actions
             }

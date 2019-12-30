@@ -2,6 +2,7 @@ let patients = []
 
 import REST from "../REST.js"
 import Patient from "../classes/Patient"
+import updateService from "../services/updateService"
 
 async function get(id) {
     if (patients.length > 0 && !id) {
@@ -45,6 +46,7 @@ async function update(patient) {
     if (update.id) {
         patients.map(p => p.id === updated.id ? new Patient(updated) : p)
     }
+    updateService.showAlert("update Succesfull")
     return updated
 }
 export default {
