@@ -4,7 +4,7 @@
         <div class="topRow">
             <div class="roomId">{{room.id}}</div>
             <div class="heartrate" v-if="patient" v-show="roomSettings.heartrate">
-                <q-icon name="favorite"></q-icon>{{latestHeartRate}}
+                <q-icon name="favorite"></q-icon>{{patient.latestHeartRate()}}
             </div>
             <q-icon name="file_copy" class="detailButton" v-if="patient" title="View details" @click.native="onRoomSelected"></q-icon>
         </div>
@@ -27,8 +27,8 @@
                 <q-item-label caption class="nextAction" v-if="nextAction" v-show="roomSettings.action">
                     <q-icon name="assignment" style="font-size:2em"></q-icon>
                     <div>
-                        <em>{{nextAction.actionName}}</em><br>
-                        {{nextTimeStamp}}
+                        <em>{{nextAction.type}}</em><br>
+                        {{patient.nextTimeStamp()}}
                     </div>
                 </q-item-label>
             </q-item-section>
@@ -61,30 +61,10 @@
             }
         },
         computed: {
-            latestHeartRate() {
-                return this.patient.heartrate[this.patient.heartrate.length - 1]
-            },
             nextAction() {
                 return this.patient.nextAction()
             },
-            nextTimeStamp() {
-                let between = this.patient.nextAction().time - Date.now()
-                let abs = Math.abs(between)
-                let totalSeconds = Math.floor(abs / 1000)
-                let seconds = totalSeconds % 60
-                let totalMinutes = Math.floor(totalSeconds / 60)
-                let minutes = totalMinutes % 60
-                let totalHours = Math.floor(totalMinutes / 60)
-                let hours = totalHours % 24
-                let days = Math.floor(totalHours / 24)
-
-                let timeString = `${days?`${days}d`:""} ${hours}h ${minutes}m`
-
-                if (between > 0)
-                    return `binnen ${timeString}`
-                else
-                    return `${timeString} geleden`
-            },
+            
             roomSettings() {
                 let s = settings.getters.roomSettings().group
                 let rs = {}
@@ -108,7 +88,7 @@
         methods: {
             onRoomSelected(event) {
                 if (this.patient) {
-                    this.$emit('patient-selected', this.patient.id)
+                    this.$emit("patient-selected", this.patient.id)
                 }
             },
 

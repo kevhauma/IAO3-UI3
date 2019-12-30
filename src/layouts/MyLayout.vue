@@ -7,6 +7,12 @@
                 <q-toolbar-title>
                     ExamenProject - Hospitaal
                 </q-toolbar-title>
+                <q-input dark dense standout @focus="searching=true" @blur="clearSearch()" v-model="searchInput" @input="search()" input-class="text-right" class="q-ml-md" debounce="100" :loading="searchLoading">
+                    <template v-slot:append>
+                        <q-icon v-if="searchInput === ''" name="search" />
+                        <q-icon v-else name="clear" class="cursor-pointer" @click="clearSearch()" />
+                    </template>
+                </q-input>
                 <q-btn flat round dense icon="build" class="q-mr-xs" @click="settings=!settings" />
             </q-toolbar>
         </q-header>
@@ -32,17 +38,21 @@
         <q-page-container>
             <router-view />
         </q-page-container>
-        
+        <search-result-list v-if="searching" :results="searchResults" @on-select="goTo">
+        </search-result-list>
+
         <settings v-if="settings">
         </settings>
-        
+
     </q-layout>
 </template>
 
 <script>
     import departmentManager from "../util/managers/departmentManager"
+    import patientManager from "../util/managers/patientManager"
     import heartRateManager from "../util/managers/heartRateManager"
     import Settings from "../components/settings"
+    import SearchResultList from "../components/SearchResultList"
     export default {
         name: 'MyLayout',
         data() {
@@ -50,10 +60,15 @@
                 leftDrawerOpen: false,
                 departments: null,
                 settings: false,
+                searchInput: '',
+                searchLoading: false,
+                searchResults: [],
+                searching: false,
             }
         },
-        components:{
-          Settings  
+        components: {
+            Settings,
+            SearchResultList
         },
         created() {
             departmentManager.get()
@@ -64,6 +79,54 @@
             sortedDepartments() {
                 return this.departments.slice().sort((a, b) => a.id - b.id)
             }
+        },
+        methods: {
+            async search() {
+                let all = await patientManager.get()
+                this.searchLoading = true
+                this.searchResults = []
+                this.searchInput = this.searchInput.toLowerCase()
+                if (this.searchInput === "" || this.searchInput.length < 3) {
+                    this.searchLoading = false
+                    return
+                }
+                all.forEach(p => {
+                    let pushed = false
+                    if (p.status.toLowerCase().includes(this.searchInput))
+                        pushed = true
+
+                    if (p.name.toLowerCase().includes(this.searchInput))
+                        pushed = true
+
+                    if (this.searchInput.startsWith("vegan") && p.vegan)
+                        pushed = true
+
+                    if (p.nextAction() && p.nextAction().type.includes(this.searchInput))
+                        pushed = true
+
+                    if (pushed)
+                        this.searchResults.push(p)
+
+                })
+                this.searchLoading = false
+            },
+            clearSearch() {
+                setTimeout(() => {
+                    this.searching = false
+                    this.searchInput = ''
+                    this.searchResults = []
+                }, 100)
+            },
+            goTo(id) {
+                this.$router.push({
+                    name: 'patient',
+                    params: {
+                        id: id
+                    }
+                })
+                this.clearSearch()
+            }
+
         }
     }
 

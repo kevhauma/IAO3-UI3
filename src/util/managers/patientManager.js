@@ -36,7 +36,7 @@ async function update(patient) {
         actions: patient.actions.map(a => {
             return {
                 id: a.id,
-                actionName: a.actionName,
+                type: a.type,
                 done: a.done,
                 time: a.time
             }

@@ -13,7 +13,7 @@ export default class Patient {
         this.actions = np.actions.map(a => { //set date string to date object
             return {
                 id: a.id,
-                actionName: a.actionName,
+                type: a.type,
                 done: a.done,
                 time: new Date(a.time)
             }
@@ -29,17 +29,13 @@ export default class Patient {
         let firstAction = this.nextAction()
 
         let hrSettings = settings.getters.HRthreshold()
-        let latest = this.heartrate[this.heartrate.length - 1]
-        if (latest > hrSettings.max || latest < hrSettings.min) {
+        if (this.latestHeartRate() > hrSettings.max || this.latestHeartRate() < hrSettings.min) {
             this.status = "THRESH"
-        } 
-        else if (firstAction.time - Date.now() < 0) {
+        } else if (firstAction.time - Date.now() < 0) {
             this.status = "EMERGENCY"
-        } 
-        else if ((firstAction.time - Date.now()) / (60 * 1000) < settings.getters.actionThreshold()) {
+        } else if ((firstAction.time - Date.now()) / (60 * 1000) < settings.getters.actionThreshold()) {
             this.status = "SOON"
-        } 
-        else {
+        } else {
             this.status = "CLEAR"
         }
 
@@ -50,6 +46,9 @@ export default class Patient {
     addHeartRate(hr) {
         this.heartrate.push(hr)
     }
+    latestHeartRate(){
+        return this.heartrate[this.heartrate.length-1]
+    }
 
     nextAction() {
         return this.actions
@@ -58,5 +57,29 @@ export default class Patient {
                 curr.time.getMilliseconds() < early.time.getMilliseconds() ? curr : early, {
                     time: new Date(new Date().setFullYear("9999"))
                 }) //set very late date
+    }
+    nextTimeStamp() {
+        let between = this.nextAction().time - Date.now()
+        let abs = Math.abs(between)
+        let totalSeconds = Math.floor(abs / 1000)
+        let seconds = totalSeconds % 60
+        let totalMinutes = Math.floor(totalSeconds / 60)
+        let minutes = totalMinutes % 60
+        let totalHours = Math.floor(totalMinutes / 60)
+        let hours = totalHours % 24
+        let days = Math.floor(totalHours / 24)
+
+        let timeString = `${days?`${days}d`:""} ${hours}h ${minutes}m`
+
+        if (between > 0)
+            return `binnen ${timeString}`
+        else
+            return `${timeString} geleden`
+    }
+    addAction(action) {
+        this.actions.push(action)
+    }
+    deleteAction(action) {
+        this.actions = this.actions.filter((a) => !(a.time.getTime() === action.time.getTime() && a.type === action.type))
     }
 }
