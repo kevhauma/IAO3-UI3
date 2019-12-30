@@ -155,7 +155,7 @@
         display: flex;
         flex-direction: row;
         margin: auto;
-        max-width: 800px;
+        max-width: 100%;
     }
 
     .moreInfo {

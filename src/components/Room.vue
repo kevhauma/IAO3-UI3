@@ -4,7 +4,7 @@
         <div class="topRow">
             <div class="roomId">{{room.id}}</div>
             <div class="heartrate" v-if="patient" v-show="roomSettings.heartrate">
-                <q-icon name="favorite"></q-icon>{{patient.latestHeartRate()}}
+                <q-icon color="red" name="favorite"></q-icon>{{patient.latestHeartRate()}}
             </div>
             <q-icon name="file_copy" class="detailButton" v-if="patient" title="View details" @click.native="onRoomSelected"></q-icon>
         </div>
@@ -34,11 +34,11 @@
             </q-item-section>
         </q-item>
         <q-item class="facilities" v-show="roomSettings.facilities">
-            <q-icon v-if="room.facilities.TV" flat round color="green" name="live_tv" />
-            <q-icon v-if="!room.facilities.TV" flat round color="red" name="tv_off" />
-            <q-icon v-if="room.facilities.sanitair" flat round color="teal" name="wc" />
-            <q-icon v-if="room.facilities.salon" flat round color="brown" name="event_seat" />
-            <q-icon v-if="room.facilities.kinderverzorging" flat round color="amber" name="child_friendly" />
+            <q-icon v-if="room.facilities.TV" flat round color="green" name="live_tv" title="TV" />
+            <q-icon v-if="!room.facilities.TV" flat round color="red" name="tv_off"  title="GEEN TV"/>
+            <q-icon v-if="room.facilities.sanitair" flat round color="teal" name="wc" title="SANITAIR"/>
+            <q-icon v-if="room.facilities.salon" flat round color="brown" name="event_seat" title="SALON"/>
+            <q-icon v-if="room.facilities.kinderverzorging" flat round color="amber" name="child_friendly" title="KINDERVERZORGING" />
         </q-item>
     </div>
 
