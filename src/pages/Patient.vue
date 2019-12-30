@@ -20,18 +20,19 @@
         </div>
         <q-item class="actionAndHeartrate">
             <q-item class="actions">
-                <h3>Acties</h3>
+                <h3>Acties</h3> 
+                <q-toggle v-model="filter"> verberg uitgevoerde acties </q-toggle>
                 <q-markup-table flat bordered :separator="'cell'">
                     <thead>
                         <tr>
                             <th class="text-center">type</th>
                             <th class="text-center">tijdstip</th>
-                            <th class="text-center">gedaan</th>
+                            <th class="text-center">uitgevoerd</th>
                             <th class="text-center">delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="actionListItem" v-for="action in patient.actions" :key="action.id">
+                        <tr class="actionListItem" v-for="action in filteredActions" :key="action.id">
                             <td class="text-center">{{action.actionName}}</td>
                             <td class="text-center">{{action.time.toLocaleDateString()}} {{action.time.toLocaleTimeString()}}</td>
                             <td class="text-center">
@@ -61,7 +62,8 @@
             return {
                 patient: {},
                 mapView: true,
-                chartData: null,                
+                chartData: null, 
+                filter: false
             }
         },
         components: {
@@ -93,6 +95,12 @@
             patientBirth() {
                 return new Date(this.patient.dob).toLocaleDateString()
             },
+            filteredActions(){
+                if(this.filter)
+                    return this.patient.actions.filter(a=>a.done)
+                else 
+                    return this.patient.actions
+            }
         },
     }
 

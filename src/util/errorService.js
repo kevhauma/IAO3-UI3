@@ -1,6 +1,6 @@
 import { Notify } from 'quasar'
 
-// this shows how you can provide a service as an object literal
+//from map-todo-solution-1 with backend
 
 const ErrorService = {
   showAlert (userMessage) {
