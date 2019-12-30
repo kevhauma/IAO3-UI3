@@ -45,9 +45,11 @@ export default class Patient {
     }
     addHeartRate(hr) {
         this.heartrate.push(hr)
+        if (this.heartrate.length > 60)
+            this.heartrate.shift()
     }
-    latestHeartRate(){
-        return this.heartrate[this.heartrate.length-1]
+    latestHeartRate() {
+        return this.heartrate[this.heartrate.length - 1]
     }
 
     nextAction() {
