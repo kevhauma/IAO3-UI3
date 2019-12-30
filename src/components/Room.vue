@@ -3,23 +3,28 @@
     <div class="room-container" :style="{position}">
         <div class="topRow">
             <div class="roomId">{{room.id}}</div>
-            <span class="heartrate" v-if="patient">
+            <div class="heartrate" v-if="patient" v-show="roomSettings.heartrate">
                 <q-icon name="favorite"></q-icon>{{latestHeartRate}}
-            </span>
+            </div>
             <q-icon name="file_copy" class="detailButton" v-if="patient" title="View details" @click.native="onRoomSelected"></q-icon>
         </div>
-        <div v-if="patient" :class="patient.status" class="statusbar"></div>
+        <div v-if="patient" :class="patient.status" class="statusbar">
+            <audio autoplay loop v-if="patient.status === 'THRESH' && audioOn" style="display:none">
+                <source src="../assets/alarm.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
         <q-item class="patientInfo">
             <q-item-section avatar class="patientMain" v-if="patient">
-                <q-avatar class="patientAvatar">
+                <q-avatar class="patientAvatar" v-show="roomSettings.picture">
                     <img :src='patient.img'>
                 </q-avatar>
                 <q-item-label>{{patient.name}}</q-item-label>
             </q-item-section>
 
             <q-item-section class="patientMore" v-if="patient">
-                <q-item-label caption>{{patient.reason}}</q-item-label>
-                <q-item-label caption class="nextAction" v-if="nextAction">
+                <q-item-label caption v-show="roomSettings.reason">{{patient.reason}}</q-item-label>
+                <q-item-label caption class="nextAction" v-if="nextAction" v-show="roomSettings.action">
                     <q-icon name="assignment" style="font-size:2em"></q-icon>
                     <div>
                         <em>{{nextAction.actionName}}</em><br>
@@ -28,7 +33,7 @@
                 </q-item-label>
             </q-item-section>
         </q-item>
-        <q-item class="facilities">
+        <q-item class="facilities" v-show="roomSettings.facilities">
             <q-icon v-if="room.facilities.TV" flat round color="green" name="live_tv" />
             <q-icon v-if="!room.facilities.TV" flat round color="red" name="tv_off" />
             <q-icon v-if="room.facilities.sanitair" flat round color="teal" name="wc" />
@@ -40,6 +45,8 @@
 </template>
 <script>
     import patientManager from "../util/managers/patientManager.js"
+    import settings from "../util/settings.js"
+
     export default {
         name: 'room',
         props: {
@@ -77,8 +84,19 @@
                     return `binnen ${timeString}`
                 else
                     return `${timeString} geleden`
+            },
+            roomSettings() {
+                let s = settings.getters.roomSettings().group
+                let rs = {}
+                s.forEach(o => rs[o] = true)
 
+                return rs
+            },
+            audioOn(){
+                console.log("audio:", settings.getters.audioOn())
+                return settings.getters.audioOn()
             }
+            
         },
         created() {
             if (this.room.patient) {
@@ -94,6 +112,7 @@
                     this.$emit('patient-selected', this.patient.id)
                 }
             },
+
         },
     }
 
@@ -162,23 +181,23 @@
 
     .CLEAR {
         background-color: rgba(0, 255, 0, 1);
-         animation: none !important;
+        animation: none !important;
     }
 
     .SOON {
-        background-color: rgba(128, 128, 0, 1);
-         animation: none !important;
+        background-color: rgba(245, 135, 51, 1);
+        animation: none !important;
     }
 
     .EMERGENCY {
-        background-color: rgba(255, 100, 100, 1);
+        background-color: rgba(209, 91, 0, 1);
         animation: none !important;
     }
 
     .THRESH {
         animation-name: warning;
         animation-duration: 1s;
-         animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
     }
 
     .nextAction {
@@ -193,7 +212,8 @@
         50% {
             background-color: red;
         }
-        100%{
+
+        100% {
             background-color: white;
         }
     }

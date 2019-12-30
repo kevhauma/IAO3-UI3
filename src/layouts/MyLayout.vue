@@ -7,7 +7,7 @@
                 <q-toolbar-title>
                     ExamenProject - Hospitaal
                 </q-toolbar-title>
-                <q-btn flat round dense icon="apps" class="q-mr-xs" @click="settings=!settings" />
+                <q-btn flat round dense icon="build" class="q-mr-xs" @click="settings=!settings" />
             </q-toolbar>
         </q-header>
 

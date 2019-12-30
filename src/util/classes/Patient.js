@@ -6,7 +6,7 @@ export default class Patient {
         this.bloodPressure = np.bloodPressure
         this.img = np.img
         this.dob = np.dob
-        this.heartrate = [55]
+        this.heartrate = []
         this.status = "CLEAR"
         this.vegan = np.vegan
         this.reason = np.reason

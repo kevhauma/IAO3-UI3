@@ -11,8 +11,11 @@
                 action range: {{ actionTime }}
             </div>
 
-            <q-slider v-model="action" :min="0" :max="180" color="white" :step="15"/>
-        </div>
+            <q-slider v-model="action" :min="0" :max="180" color="white" :step="15" />
+            <q-item caption>show in room</q-item>
+            <q-option-group v-model="roomSettings.group" :options="roomSettings.options" type="checkbox" color="green" inline dense />
+            <q-item caption>Alarm <q-checkbox v-model="audio" color="green"></q-checkbox></q-item> 
+    </div>
     </div>
 </template>
 <script>
@@ -27,6 +30,8 @@
             return {
                 hr: settings.getters.HRthreshold(),
                 action: settings.getters.actionThreshold(),
+                roomSettings: settings.getters.roomSettings(),
+                audio: settings.getters.audioOn(),
             }
         },
         methods: {
@@ -50,7 +55,16 @@
             },
             action() {
                 settings.setters.setActionThreshold(this.action)
-            }
+            },
+            'roomSettings.group': {
+                handler() {
+                    settings.setters.setRoomSettings(this.roomSettings)
+                },
+                deep: true,
+            },
+            audio() {
+                settings.setters.setAudioOn(this.audio)
+            },
         }
     }
 

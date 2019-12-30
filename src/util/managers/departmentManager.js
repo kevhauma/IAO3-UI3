@@ -25,9 +25,7 @@ async function get(id) {
 }
 
 async function getRooms(id) {
-    let {
-        rooms
-    } = await get(id)
+    let {rooms} = await get(id)
     let newRooms = []
     for (const room of rooms) {
         newRooms.push(await roomManager.get(room))
