@@ -32,7 +32,7 @@
                 this.graphData = {
                     labels: this.chartdata.map(d => ""),
                     datasets: [{
-                        label: 'HeartRate',
+                        label: 'Hartslag',
                         data: this.chartdata,
                         backgroundColor: colors.getBrand('primary'),
                         pointColor: "rgba(0,0,0,0)",
@@ -82,5 +82,7 @@
 
 <style>
 
-
+    canvas{
+        width: 100% !important;
+    }
 </style>

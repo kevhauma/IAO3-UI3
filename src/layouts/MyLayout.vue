@@ -28,7 +28,7 @@
                         </q-item-section>
                         <q-item-section>
                             <q-item-label>{{dep.name}}</q-item-label>
-                            <q-item-label caption>rooms available: <span v-if="dep.freeRooms">{{dep.freeRooms}}</span></q-item-label>
+                            <q-item-label caption>Beschikbare kamers: <span v-if="dep.freeRooms">{{dep.freeRooms}}</span></q-item-label>
                         </q-item-section>
                     </q-item>
                 </q-item>

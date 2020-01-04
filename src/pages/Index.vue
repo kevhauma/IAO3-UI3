@@ -5,7 +5,8 @@
             tag="a"
             v-for="dep in sortedDepartments" 
             :key="dep.id"                    
-            :to="/department/+dep.id"
+            @click="goToDepartment(dep)"
+             class="indexdepartment"
         >
             {{dep.id}}. {{dep.name}}
         </div>
@@ -14,7 +15,11 @@
 <style>
     .container {
         height: 100%;
-        width: 100%;
+        width: 100%;        
+    }
+    .indexdepartment:hover {
+        text-decoration: underline;
+        cursor: pointer;
     }
 
 </style>
@@ -24,21 +29,24 @@
         name: 'PageIndex',
         data() {
             return {
-                currentDepartment: null,
-                departments: []
+                departments: null
             }
         },
         created() {
             departmentManager.get()
                 .then(result => {
                     this.departments = result
-                    this.currentDepartment = this.sortedDepartments[0]
                 })
                 .catch(e => console.error("error: ", e))
         },
         methods: {
-            changeDepartment(dep) {
-                this.currentDepartment = dep
+            goToDepartment(dep) {
+                this.$router.push({
+                    name: 'department',
+                    params: {
+                        id: dep.id
+                    }
+                })
             }
         },
         computed: {

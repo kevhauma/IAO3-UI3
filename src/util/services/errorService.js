@@ -7,7 +7,7 @@ const ErrorService = {
     Notify.create({
       color: 'negative',
       position: 'top',
-      message: userMessage,
+      message: `${userMessage}.\nPlease try to refresh the page.`,
       icon: 'report_problem'
     })
   },
