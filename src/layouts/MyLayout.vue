@@ -21,7 +21,7 @@
             <q-list v-if="departments">
 
                 <q-item-label header>Departments</q-item-label>
-                <q-item v-for="dep in sortedDepartments" :key="dep.id">
+                <q-item v-for="dep in sortedDepartments" :key="dep.id" :style="{'--department--hover':dep.color}" class="department">
                     <q-item clickable tag="a" :to="/department/+dep.id">
                         <q-item-section avatar>
                             <q-icon :name="dep.icon" />
@@ -135,5 +135,7 @@
     .q-page-container {
         height: 100%;
     }
-
+    .department:hover{
+        color: var(--department--hover)
+    }
 </style>

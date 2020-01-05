@@ -34,6 +34,10 @@ const setting = Vue.observable({
      
     },
     audioOn: false,
+    clearHex: "#00FF00",
+    soonHex: "#f5cb34",
+    emergencyHex: "#f58734",
+    treshHex: "#FF0000",
     
 });
 
@@ -42,6 +46,10 @@ const getters = {
     HRthreshold: () => setting.HRthreshold,
     roomSettings: () => setting.roomSettings,
     audioOn: () => setting.audioOn,
+    clearHex: () => setting.clearHex,
+    soonHex: () => setting.soonHex,
+    emergencyHex: () => setting.emergencyHex,
+    treshHex: () => setting.treshHex,
 }
 
 const setters = {
@@ -49,6 +57,10 @@ const setters = {
     setHRthreshold: (val) => setting.HRthreshold = val,
     setRoomSettings: (val) => setting.roomSettings = val,
     setAudioOn: (val) => setting.audioOn = val,
+    setClearHex: (val) => setting.clearHex = val,
+    setSoonHex: (val) => setting.soonHex = val,
+    setEmergencyHex: (val) => setting.emergencyHex = val,
+    setTreshHex: (val) => setting.treshHex = val,
 }
 
 export default {
