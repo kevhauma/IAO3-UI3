@@ -2,16 +2,23 @@
     <div class="settingContainer" :style="primaryBackground()">
         <div style="padding: 10px;">
             <h4>Settings</h4>
-            <div>
-                heartrate range: {{ hr.min }}bpm to {{ hr.max }}bpm
+            <div class="ranges">
+                <div class="range">
+                    <div >
+                        heartrate range: {{ hr.min }}bpm to {{ hr.max }}bpm
+                    </div>
+                    <q-range v-model="hr" :min="0" :max="300" color="white" />
+                </div>
+                <div class="range">
+                    
+                    <div>
+                        action range: {{ actionTime }}
+                    </div>
+                    <q-slider v-model="action" :min="0" :max="180" color="white" :step="15" />
+                </div>
             </div>
 
-            <q-range v-model="hr" :min="0" :max="300" color="white" />
-            <div>
-                action range: {{ actionTime }}
-            </div>
-
-            <q-slider v-model="action" :min="0" :max="180" color="white" :step="15" />
+            
             <q-item caption>show in room</q-item>
             <q-option-group v-model="roomSettings.group" :options="roomSettings.options" type="checkbox" color="green" inline dense />
             <q-item caption>Alarm <q-checkbox v-model="audio" color="green"></q-checkbox>
@@ -54,7 +61,9 @@
     import {
         colors
     } from 'quasar'
-    let {lighten} = colors
+    let {
+        lighten
+    } = colors
     export default {
         name: 'setting',
         data() {
@@ -75,13 +84,14 @@
                     'background-color': colors.getBrand('primary')
                 }
             },
-            getPallete(color){
-                return [lighten(color,-25),
-                        lighten(color,-15),
-                        lighten(color,-5),
-                        lighten(color,5),
-                        lighten(color,15),
-                        lighten(color,25),]
+            getPallete(color) {
+                return [lighten(color, -25),
+                    lighten(color, -15),
+                    lighten(color, -5),
+                    lighten(color, 5),
+                    lighten(color, 15),
+                    lighten(color, 25),
+                ]
             }
         },
         computed: {
@@ -144,9 +154,13 @@
         flex-wrap: wrap;
     }
 
-    my-picker {
+    .my-picker {
         margin: 5px;
         flex: 200px;
     }
-
+    .ranges{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
 </style>

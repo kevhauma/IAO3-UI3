@@ -1,6 +1,6 @@
 <template app='AddAction'>
-    <q-dialog :value="show">
-        <q-card style="min-width: 300px">
+    <q-dialog :value="show" >
+        <q-card class="actionDialogue">
             <q-card-section>
                 <div class="text-h6">Add Action</div>
             </q-card-section>
@@ -12,11 +12,9 @@
                     </template>
                 </q-select>
             </q-card-section>
-            <q-card-section>
-                <div class="q-gutter-md row items-start">
-                    <q-date v-model="newAction.time" mask="YYYY-MM-DD HH:mm" color="primary" required />
-                    <q-time v-model="newAction.time" mask="YYYY-MM-DD HH:mm" color="primary" reauired />
-                </div>
+            <q-card-section class="timepicker">
+                    <q-date v-model="newAction.time" mask="YYYY-MM-DD HH:mm" color="primary" class="date"/>
+                    <q-time v-model="newAction.time" mask="YYYY-MM-DD HH:mm" color="primary" class="time"/>
             </q-card-section>
 
             <q-card-actions align="right" class="text-primary">
@@ -83,6 +81,15 @@
 
 </script>
 <style>
-
+    .actionDialogue{
+        max-width: 100%;
+    }
+    .timepicker{
+        display: flex;
+        flex-direction: row;
+    }
+    .date, .time{
+        margin:5px;
+    }
 
 </style>

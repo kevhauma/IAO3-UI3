@@ -1,12 +1,15 @@
     <template app='floorplan'>
         <div class='floorplan'>
-            <img src="../statics/floorplan.png">
+            <img :src="floorplanImage">
             <div>
                 <room v-for='room in updatedRooms' :key='room.id' :room='room' :position="'absolute'" :style='getStyle(room)' @patient-selected="onPatientSelected" />
             </div>
         </div>
     </template>
     <script>
+        import {
+            Dark
+        } from 'quasar'
         import roomManager from '../util/managers/roomManager'
         import departmentManager from '../util/managers/departmentManager'
         import Room from './Room.vue'
@@ -49,6 +52,13 @@
                     immediate: true,
                 }
             },
+
+            computed: {
+                floorplanImage() {
+                    return Dark.isActive ? "../statics/floorplan_dark.png" : "../statics/floorplan_light.png"
+                }
+
+            }
         }
 
     </script>

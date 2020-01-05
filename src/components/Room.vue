@@ -157,7 +157,10 @@
         justify-content: space-between;
         width: 100%;
     }
-
+    .heartrate{
+        flex-grow: 1;
+        text-align: center;
+    }
     .detailButton:hover {
         cursor: pointer;
     }

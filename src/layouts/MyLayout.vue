@@ -14,10 +14,11 @@
                     </template>
                 </q-input>
                 <q-btn flat round dense icon="build" class="q-mr-xs" @click="settings=!settings" />
+                <q-btn flat round dense :icon="darkModeIcon" @click="changeDarkMode()" class="q-mr-xs" />
             </q-toolbar>
         </q-header>
 
-        <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-2">
+        <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
             <q-list v-if="departments">
 
                 <q-item-label header>Departments</q-item-label>
@@ -48,6 +49,7 @@
 </template>
 
 <script>
+    import { Dark } from 'quasar'
     import departmentManager from "../util/managers/departmentManager"
     import patientManager from "../util/managers/patientManager"
     import heartRateManager from "../util/managers/heartRateManager"
@@ -64,6 +66,7 @@
                 searchLoading: false,
                 searchResults: [],
                 searching: false,
+                darkModeIcon: "wb_sunny"
             }
         },
         components: {
@@ -125,6 +128,11 @@
                     }
                 })
                 this.clearSearch()
+            },
+            changeDarkMode(){
+                Dark.toggle()
+                
+                this.darkModeIcon = Dark.isActive ? "brightness_3" : "wb_sunny"
             }
 
         }
